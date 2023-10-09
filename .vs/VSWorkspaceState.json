@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\auth",
+    "\\src\\roles",
+    "\\src\\users"
+  ],
+  "SelectedNode": "\\src\\users\\users.module.ts",
+  "PreviewInSolutionExplorer": false
+}
