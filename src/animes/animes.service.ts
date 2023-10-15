@@ -9,17 +9,27 @@ export class AnimesService {
 
     async create(dto: createAnimeDto) {
         console.log(dto)
-        const anime = await this.animeRepository.create({...dto})
+        const anime = await this.animeRepository.create(dto)
         return anime
+    }
+
+    async getAll() {
+        const animes = await this.animeRepository.findAll()
+        return animes
     }
 
     async getAnimesByUserId(userId: number) {
         const animes = await this.animeRepository.findAll({where: {
-            userId: userId
+           
         }})
         if (!animes) {
             throw new HttpException("Аниме у данного пользователя не найдены", HttpStatus.NOT_FOUND)
         }
         return animes
+    }
+    
+    async getAnimeById(id: number) {
+        const anime = await this.animeRepository.findOne({where: {id}})
+        return anime
     }
 }

@@ -6,6 +6,6 @@
     "\\src\\roles",
     "\\src\\users"
   ],
-  "SelectedNode": "\\src\\users\\users.module.ts",
+  "SelectedNode": "\\src\\auth\\auth.service.ts",
   "PreviewInSolutionExplorer": false
 }

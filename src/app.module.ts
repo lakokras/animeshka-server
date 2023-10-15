@@ -9,6 +9,7 @@ import { UserRoles } from "./roles/user-roles.model";
 import { AuthModule } from './auth/auth.module';
 import { AnimesModule } from './animes/animes.module';
 import { Anime } from "./animes/animes.model";
+import { UserAnimes } from "./animes/user-animes.model";
 
 @Module({
     imports: [
@@ -22,7 +23,7 @@ import { Anime } from "./animes/animes.model";
           username: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
-          models: [User, Role, UserRoles, Anime],
+          models: [User, Role, UserRoles, Anime, UserAnimes],
           autoLoadModels: true
         }),
         UsersModule,

@@ -13,9 +13,16 @@ export class AnimesController {
     createAnime(@Body() dto: createAnimeDto) {
         return this.animeService.create(dto)
     }
+    
+
+    // @Get()
+    // getAnimesByUserId(@Body() userId: number) {
+    //     return this.animeService.getAnimesByUserId(userId)
+    // }
 
     @Get()
-    getAnimesByUserId(@Body() userId: number) {
-        return this.animeService.getAnimesByUserId(userId)
+    getAll() {
+        return this.animeService.getAll()
     }
+
 }
