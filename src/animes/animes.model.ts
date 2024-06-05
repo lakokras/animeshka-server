@@ -4,15 +4,15 @@ import { User } from "src/users/users.model";
 import { UserAnimes } from "./user-animes.model";
 
 interface AnimeCreationAttrs {
-    id: number;
+    id: string;
     title: string;
 }
 
 @Table({tableName: 'animes'})
 export class Anime extends Model<Anime, AnimeCreationAttrs> {
     @ApiProperty({example: '1', description: 'unique identifier'})
-    @Column({type: DataType.INTEGER, unique: true, primaryKey: true})
-    id: number;
+    @Column({type: DataType.TEXT, unique: true, primaryKey: true})
+    id: string;
 
     @ApiProperty({example: 'jujutsu kaisen', description: 'anime title'})
     @Column({type: DataType.STRING, allowNull: false})

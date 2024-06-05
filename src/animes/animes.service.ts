@@ -28,8 +28,12 @@ export class AnimesService {
         return animes
     }
     
-    async getAnimeById(id: number) {
-        const anime = await this.animeRepository.findOne({where: {id}})
+    async getAnimeById(id: string) {
+        const anime = await this.animeRepository.findOne({
+            where: {
+              id: id.toString()
+            }
+          });
         return anime
     }
 }
