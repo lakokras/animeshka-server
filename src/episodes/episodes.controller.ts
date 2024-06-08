@@ -1,54 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpStatus, HttpException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
 import { EpisodesService } from './episodes.service';
-import { CreateEpisodeDto } from './dto/create-episode.dto'
-import { UpdateEpisodeDto } from './dto/update-episode.dto';
 import { Episodes } from './episodes.model';
-import { Roles } from 'src/auth/roles-auth.decorator';
-import { RolesGuard } from 'src/auth/roles-guard';
 
 @Controller('episodes')
 export class EpisodesController {
-  constructor(private readonly episodesService: EpisodesService) {}
+  constructor(private episodeService: EpisodesService) {}
 
   @Post()
-  @Roles("ADMIN")
-  @UseGuards(RolesGuard)
-  async create(@Body() createEpisodeDto: CreateEpisodeDto): Promise<Episodes> {
-    return this.episodesService.create(createEpisodeDto);
-  }
-
-  @Get()
-  async findAll(): Promise<Episodes[]> {
-    return this.episodesService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: number): Promise<Episodes> {
-    const episode = await this.episodesService.findOne(id);
-    if (!episode) {
-      throw new HttpException('Episode not found', HttpStatus.NOT_FOUND);
-    }
+  @UseInterceptors(FileInterceptor('file'))
+  async createEpisode(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('episode_number') episodeNumber: number,
+    @Body('anime_id') animeId: number,
+    @Body('title') title: string,
+  ) {
+    const episode = {
+      episode_number: episodeNumber,
+      anime_id: animeId,
+      title: title,
+      file: file
+    };
+  
+    // Вернуть объект эпизода
     return episode;
   }
 
-  @Patch(':id')
-  @Roles("ADMIN")
-  @UseGuards(RolesGuard)
-  async update(
-    @Param('id') id: number,
-    @Body() updateEpisodeDto: UpdateEpisodeDto,
-  ): Promise<[number, Episodes[]]> {
-    const [updatedCount, [updatedEpisode]] = await this.episodesService.update(id, updateEpisodeDto);
-    if (updatedCount === 0) {
-      throw new HttpException('Episode not found', HttpStatus.NOT_FOUND);
+  @Get(':id')
+  async getEpisode(@Param('id') id: number, @Res() res: Response): Promise<void> {
+    const episode = await this.episodeService.getEpisodeById(id);
+    if (!episode) {
+      res.status(404).send('Episode not found');
+      return;
     }
-    return [updatedCount, [updatedEpisode]];
+
+    const filePath = `${process.cwd()}/uploads/${episode.episode_path}`;
+    res.sendFile(filePath);
   }
 
-  @Delete(':id')
-  @Roles("ADMIN")
-  @UseGuards(RolesGuard)
-  async remove(@Param('id') id: number): Promise<void> {
-    await this.episodesService.remove(id);
+  @Get()
+  async getEpisodes(): Promise<Episodes[]> {
+    return this.episodeService.getEpisodes();
   }
 }

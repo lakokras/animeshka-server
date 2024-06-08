@@ -1,4 +1,4 @@
 export class createAnimeDto {
-    readonly id: string;
+    readonly id: number;
     readonly title: string;
 }
