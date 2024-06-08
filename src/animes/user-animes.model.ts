@@ -8,8 +8,8 @@ export class UserAnimes extends Model<UserAnimes> {
     id: number;
 
     @ForeignKey(() => Anime)
-    @Column({type: DataType.STRING})
-    animeId: string;
+    @Column({type: DataType.INTEGER})
+    animeId: number;
 
     @ForeignKey(() => User)
     @Column({type: DataType.INTEGER})

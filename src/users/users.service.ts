@@ -55,19 +55,16 @@ export class UsersService {
     }
 
     async addAnime(userId: number, dto: AddAnimeDto) {
-        
         const user = await this.userRepository.findByPk(userId, {include: {all: true}})
-        const anime = null
-        // throw new HttpException("Пошел ннахуй", HttpStatus.NOT_FOUND)
+        const anime = await this.animeService.getAnimeById(dto.animeId)
         if (!user) {
-            throw new HttpException("Пользователь не найден", HttpStatus.NOT_FOUND)
+            throw new HttpException("Пользователь или аниме не найдены", HttpStatus.NOT_FOUND)
         }
         if (anime && user) {
             await user.$add('anime', anime.id)
             return this.getUserAnimes(userId)
         }
         if(!anime && user) {
-            
             await this.animeService.create({id: dto.animeId, title: dto.title})
             await user.$add('anime', dto.animeId)
             return this.getUserAnimes(userId)
@@ -75,9 +72,8 @@ export class UsersService {
         throw new HttpException("Пользователь или аниме не найдены", HttpStatus.NOT_FOUND)
     }
 
-    async deleteAnime(userId: number, animeId: string) {
+    async deleteAnime(userId: number, animeId: number) {
         const user = await this.userRepository.findByPk(userId, {include: {all: true}})
-        
         const anime = await this.animeService.getAnimeById(animeId)
         if (!user || !anime) {
             throw new HttpException("Пользователь или аниме не найдены", HttpStatus.NOT_FOUND)
