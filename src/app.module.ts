@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { AnimesModule } from './animes/animes.module';
 import { Anime } from "./animes/animes.model";
 import { UserAnimes } from "./animes/user-animes.model";
+import { EpisodesModule } from './episodes/episodes.module';
+import { Episodes } from "./episodes/episodes.model";
 
 @Module({
     imports: [
@@ -23,13 +25,14 @@ import { UserAnimes } from "./animes/user-animes.model";
           username: process.env.POSTGRES_USER,
           password: process.env.POSTGRES_PASSWORD,
           database: process.env.POSTGRES_DB,
-          models: [User, Role, UserRoles, Anime, UserAnimes],
+          models: [User, Role, UserRoles, Anime, UserAnimes, Episodes],
           autoLoadModels: true
         }),
         UsersModule,
         RolesModule,
         AuthModule,
-        AnimesModule
+        AnimesModule,
+        EpisodesModule
       ]
 })
 export class AppModule {}
