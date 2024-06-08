@@ -1,8 +1,7 @@
 import {IsNumber} from "class-validator";
 
 export class AddAnimeDto {
-    @IsNumber({}, {message: "Должно быть числом"})
-    readonly animeId: number;
+    readonly animeId: string;
 
     readonly title: string;
 }
